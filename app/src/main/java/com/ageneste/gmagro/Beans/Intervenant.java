@@ -17,6 +17,10 @@ public class Intervenant {
         this.codeEtab = codeEtab;
     }
 
+    public int getCodeEtab() {
+        return codeEtab;
+    }
+
     @Override
     public String toString() {
         return nom + " " +prenom;

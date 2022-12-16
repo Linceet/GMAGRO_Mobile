@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tv_qui"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
@@ -32,14 +32,6 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_act" />
-
-    <Spinner
-        android:id="@+id/sp_heureDeb"
-        android:layout_width="141dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sp_act"
-        app:layout_constraintTop_toBottomOf="@+id/tv_heureDeb" />
 
     <TextView
         android:id="@+id/tv_act"
@@ -331,5 +323,15 @@
         app:layout_constraintBottom_toTopOf="@+id/sp_temps"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_perso" />
+
+    <EditText
+        android:id="@+id/tt_heurDeb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sp_act"
+        app:layout_constraintTop_toBottomOf="@+id/tv_heureDeb" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

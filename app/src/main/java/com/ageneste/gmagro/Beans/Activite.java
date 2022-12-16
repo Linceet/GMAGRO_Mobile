@@ -9,4 +9,8 @@ public class Activite {
         this.lib=lib;
     }
 
+    @Override
+    public String toString() {
+        return code + " : " + lib;
+    }
 }
