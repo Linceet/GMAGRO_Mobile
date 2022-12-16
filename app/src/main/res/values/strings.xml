@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">GMAGRO Alexis Android</string>
+    <string name="login">Votre login</string>
+    <string name="password">votre mots de passe</string>
+    <string name="connexion">Connexion</string>
+    <string name="deco">Déconnexion</string>
+    <string name="nnx_interv">Nouvelle Intervention</string>
+    <string name="add_Intervention">Ajouter l\'intervention</string>
+    <string name="selectAct">Selection d\'activité</string>
+    <string name="heur_deb">Heure de début</string>
+    <string name="selectMach">Selection Machine</string>
+    <string name="selecCD">Selection du CD</string>
+    <string name="selecCO">Selection du CO</string>
+    <string name="selecSD">Selection du SD</string>
+    <string name="selecSO">Selection du SO</string>
+    <string name="commentaire">Ajouter un commantaire</string>
+    <string name="intervTerm">Intervention terminée</string>
+    <string name="machArr">Machine arrêter</string>
+    <string name="ChamgeOrga">Changement d\'organe</string>
+    <string name="pertes">Pertes</string>
+    <string name="listeInter">la liste des intervnenant et le temps passé</string>
+    <string name="heurFin">Heure de fin</string>
+    <string name="tempsArr">Temps d\'arrêt</string>
+    <string name="perso">Personnes</string>
+    <string name="tempPasse">Temps passé</string>
+    <string name="ajoutPerso">Ajouter </string>
+
+</resources>
