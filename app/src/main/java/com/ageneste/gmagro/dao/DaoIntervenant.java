@@ -4,22 +4,32 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.ageneste.gmagro.Beans.Intervenant;
+import com.ageneste.gmagro.Beans.IntervenantTps;
+import com.ageneste.gmagro.Beans.So;
 import com.ageneste.gmagro.ws.WSConnexionHTTPS;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DaoIntervenant {
     private static DaoIntervenant instance = null;
     private Intervenant moi = null;
+    private final List<Intervenant> intervs;
 
     private DaoIntervenant() {
-
+        intervs = new ArrayList<>();
     }
+
+    public List<Intervenant> getIntervs(){return intervs;}
+
+
     public static DaoIntervenant getInstance(Context c) {
         if (instance == null) {
             instance = new DaoIntervenant();
@@ -77,4 +87,51 @@ public class DaoIntervenant {
             dlg.whenWSConnexionIsTerminated(1);
         }
     }
+
+    public void getAllPersonne(DelegateAsyncTask dlg){
+        String url = "uc=getAllIntervs";
+        @SuppressLint("StaticFieldLeak") WSConnexionHTTPS ws = new WSConnexionHTTPS() {
+            @Override
+            protected void onPostExecute(String s) {
+                try {
+                    traiterAllPersonne(s, dlg);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        ws.execute(url);
+    }
+
+    private void traiterAllPersonne(String s, DelegateAsyncTask dlg) throws JSONException {
+        intervs.clear();
+        JSONArray jar = new JSONArray(s);
+        for(int i=0; i<jar.length() ;i++) {
+            JSONObject jor = jar.getJSONObject(i);
+            String mail = jor.get("mail").toString();
+            String nom = jor.get("nom").toString();
+            String prenom = jor.get("prenom").toString();
+            Boolean isAct = jor.getInt("actif") == 1;
+            int codeR = jor.getInt("codeRole");
+            int codeE = jor.getInt("codeEtab");
+
+            Intervenant inter = new Intervenant(mail, prenom, nom, isAct, codeR, codeE);
+            intervs.add(inter);
+        }
+        if (intervs.size() == 0) {
+            dlg.whenWSConnexionIsTerminated(null);
+        }else{
+            dlg.whenWSConnexionIsTerminated(1);
+        }
+    }
+
+    public void removeIntervFromList(Intervenant interv){
+        intervs.remove(interv);
+    }
+    public void addIntervFromLV(IntervenantTps intervTps){
+        Intervenant interv = intervTps.getIntervenant();
+        intervs.add(interv);
+
+    }
+
 }

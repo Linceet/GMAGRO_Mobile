@@ -21,6 +21,10 @@ public class Machine {
 
     }
 
+    public String getCodeMachine() {
+        return codeMachine;
+    }
+
     @Override
     public String toString() {
         return libelle;

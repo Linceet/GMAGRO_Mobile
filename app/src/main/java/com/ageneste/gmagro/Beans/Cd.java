@@ -11,7 +11,9 @@ public class Cd {
         this.codeEtab = codeEtab;
     }
 
-
+    public String getCodeCD() {
+        return codeCD;
+    }
 
     @Override
     public String toString() {

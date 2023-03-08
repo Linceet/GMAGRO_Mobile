@@ -1,18 +1,18 @@
 package com.ageneste.gmagro.Beans;
 
-public class Co {
-    private String codeCo;
+public class So {
+    private String codeSo;
     private String lib;
     private int codeEtab;
 
-    public Co(String codeCo, String lib, int codeEtab){
-        this.codeCo = codeCo;
+    public So(String codeSo, String lib, int codeEtab){
+        this.codeSo = codeSo;
         this.lib = lib;
         this.codeEtab = codeEtab;
     }
 
-    public String getCodeCo() {
-        return codeCo;
+    public String getCodeSo() {
+        return codeSo;
     }
 
     @Override

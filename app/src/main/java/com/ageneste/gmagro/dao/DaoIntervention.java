@@ -6,7 +6,11 @@ import android.content.Context;
 import com.ageneste.gmagro.Beans.Activite;
 import com.ageneste.gmagro.Beans.Cd;
 import com.ageneste.gmagro.Beans.Co;
+import com.ageneste.gmagro.Beans.Intervenant;
+import com.ageneste.gmagro.Beans.Intervention;
 import com.ageneste.gmagro.Beans.Machine;
+import com.ageneste.gmagro.Beans.Sd;
+import com.ageneste.gmagro.Beans.So;
 import com.ageneste.gmagro.ws.WSConnexionHTTPS;
 
 import org.json.JSONArray;
@@ -26,12 +30,18 @@ public class DaoIntervention {
     private final List<Machine> machines;
     private final List<Cd> cds;
     private final List<Co> cos;
+    private final List<Sd> sds;
+    private final List<So> sos;
+    private final List<Intervention> intervs;
 
     private DaoIntervention() {
         activites = new ArrayList<>();
         machines = new ArrayList<>();
         cds = new ArrayList<>();
         cos = new ArrayList<>();
+        sds = new ArrayList<>();
+        sos = new ArrayList<>();
+        intervs = new ArrayList<>();
     }
 
     public List<Activite> getActivites() {
@@ -44,6 +54,18 @@ public class DaoIntervention {
 
     public List<Cd> getCds() {
         return cds;
+    }
+
+    public List<Co> getCos() {
+        return cos;
+    }
+
+    public List<Sd> getSds(){return sds;}
+
+    public List<So> getSos(){return sos;}
+
+    public List<Intervention> getIntervs() {
+        return intervs;
     }
 
     public static DaoIntervention getInstance(Context c) {
@@ -86,8 +108,8 @@ public class DaoIntervention {
         }
     }
 
-    public void getMach(int codeE, DelegateAsyncTask dlg) {
-        String url = "uc=getMachine&codeE="+codeE;
+    public void getMach(DelegateAsyncTask dlg) {
+        String url = "uc=getMachine";
         @SuppressLint("StaticFieldLeak") WSConnexionHTTPS ws = new WSConnexionHTTPS() {
             @Override
             protected void onPostExecute(String s) {
@@ -125,8 +147,8 @@ public class DaoIntervention {
         }
     }
 
-    public void getCd(int codeE,DelegateAsyncTask dlg) {
-        String url = "uc=getCD&codeE="+codeE;
+    public void getCd(DelegateAsyncTask dlg) {
+        String url = "uc=getCD";
         @SuppressLint("StaticFieldLeak") WSConnexionHTTPS ws = new WSConnexionHTTPS() {
             @Override
             protected void onPostExecute(String s) {
@@ -159,8 +181,8 @@ public class DaoIntervention {
         }
     }
 
-    public void getCo(int codeE,DelegateAsyncTask dlg) {
-        String url = "uc=getCO&codeE="+codeE;
+    public void getCo(DelegateAsyncTask dlg) {
+        String url = "uc=getCO";
         @SuppressLint("StaticFieldLeak") WSConnexionHTTPS ws = new WSConnexionHTTPS() {
             @Override
             protected void onPostExecute(String s) {
@@ -192,5 +214,140 @@ public class DaoIntervention {
             dlg.whenWSConnexionIsTerminated(1);
         }
     }
+
+    public void getSd(DelegateAsyncTask dlg) {
+        String url = "uc=getSD";
+        @SuppressLint("StaticFieldLeak") WSConnexionHTTPS ws = new WSConnexionHTTPS() {
+            @Override
+            protected void onPostExecute(String s) {
+                try {
+                    traiterGetSd(s, dlg);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        ws.execute(url);
+    }
+
+
+    private void traiterGetSd(String s, DelegateAsyncTask dlg) throws JSONException {
+        sds.clear();
+        JSONArray  jar = new JSONArray(s);
+        for(int i=0; i<jar.length() ;i++) {
+            JSONObject jo = jar.getJSONObject(i);
+            String codeSD = jo.get("codeSD").toString();
+            String lib= jo.get("libelle").toString();
+            int codeEtab = jo.optInt("codeEtab", 0);
+            Sd sd = new Sd(codeSD,lib,codeEtab);
+            sds.add(sd);
+        }
+        if (sds.size() == 0) {
+            dlg.whenWSConnexionIsTerminated(null);
+        }else{
+            dlg.whenWSConnexionIsTerminated(1);
+        }
+    }
+
+    public void getSo(DelegateAsyncTask dlg) {
+        String url = "uc=getSO";
+        @SuppressLint("StaticFieldLeak") WSConnexionHTTPS ws = new WSConnexionHTTPS() {
+            @Override
+            protected void onPostExecute(String s) {
+                try {
+                    traiterGetSo(s, dlg);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        ws.execute(url);
+    }
+
+
+    private void traiterGetSo(String s, DelegateAsyncTask dlg) throws JSONException {
+        sos.clear();
+        JSONArray  jar = new JSONArray(s);
+        for(int i=0; i<jar.length() ;i++) {
+            JSONObject jo = jar.getJSONObject(i);
+            String codeSO = jo.get("codeSO").toString();
+            String lib= jo.get("libelle").toString();
+            int codeEtab = jo.optInt("codeEtab", 0);
+            So so = new So(codeSO,lib,codeEtab);
+            sos.add(so);
+        }
+        if (sos.size() == 0) {
+            dlg.whenWSConnexionIsTerminated(null);
+        }else{
+            dlg.whenWSConnexionIsTerminated(1);
+        }
+    }
+
+
+    public void addIntervention(String cAct,String cMach,String cCd,String cCo,String cSd,String cSo,String cCom,int cChO,int cPer,String cTpsPass,String cTpsArr,String cMsg,DelegateAsyncTask dlg) {
+        String url = "uc=addIntervention&cAct="+cAct+"&cMach="+cMach+"&cCd="+cCd+"&cCo="+cCo+"&cSd="+cSd+"&cSo="+cSo+"&cCom="+cCom+"&cCgO="+cChO+"&cPer="+cPer+"&cTpsPass="+cTpsPass+"&cTpsArr="+cTpsArr+"&cInt="+cMsg;
+        @SuppressLint("StaticFieldLeak") WSConnexionHTTPS ws = new WSConnexionHTTPS() {
+            @Override
+            protected void onPostExecute(String s) {
+                traiterAddIntervention(s, dlg);
+            }
+        };
+        ws.execute(url);
+    }
+    private void traiterAddIntervention(String s, DelegateAsyncTask dlg) {
+        if (s.equals("1")) {
+            dlg.whenWSConnexionIsTerminated(1);
+        }else{
+            dlg.whenWSConnexionIsTerminated(0);
+        }
+    }
+
+    public void getIntervention(DelegateAsyncTask dlg) {
+        String url = "uc=getIntervention";
+        @SuppressLint("StaticFieldLeak") WSConnexionHTTPS ws = new WSConnexionHTTPS() {
+            @Override
+            protected void onPostExecute(String s) {
+                try {
+                    traiterGetIntervention(s, dlg);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        ws.execute(url);
+    }
+
+
+    private void traiterGetIntervention(String s, DelegateAsyncTask dlg) throws JSONException {
+        intervs.clear();
+        JSONArray  jar = new JSONArray(s);
+        for(int i=0; i<jar.length() ;i++) {
+            JSONObject jo = jar.getJSONObject(i);
+            int idInterv = jo.getInt("idIntervention");
+            String dh_deb = jo.get("dh_debut").toString();
+            String dh_fin= jo.get("dh_fin").toString();
+            String com = jo.get("commentaire").toString();
+            String tps_arr = jo.get("temps_arret").toString();
+            boolean chO = jo.getInt("changement_organe")==1;
+            boolean pert = jo.getInt("perte")==1;
+            String dh_create = jo.get("dh_creation").toString();
+            String dh_maj = jo.get("dh_derniere_maj").toString();
+            String idInter = jo.get("idInterv").toString();
+            String codeAct = jo.get("codeAct").toString();
+            String codeMach = jo.get("codeMachine").toString();
+            String codeCd = jo.get("codeCD").toString();
+            String codeCo = jo.get("codeCO").toString();
+            String codeSd = jo.get("codeSD").toString();
+            String codeSo = jo.get("codeSO").toString();
+            Intervention inter = new Intervention(idInterv,dh_deb,dh_fin,com,tps_arr,chO,pert,dh_create,dh_maj,idInter,codeAct,codeMach,codeCd,codeCo,codeSd,codeSo);
+            intervs.add(inter);
+        }
+        if (intervs.size() == 0) {
+            dlg.whenWSConnexionIsTerminated(null);
+        }else{
+            dlg.whenWSConnexionIsTerminated(1);
+        }
+    }
+
 
 }

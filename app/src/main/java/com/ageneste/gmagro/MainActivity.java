@@ -23,9 +23,7 @@ public class MainActivity extends AppCompatActivity {
          et_log = findViewById(R.id.et_login);
          et_pass = findViewById(R.id.et_pass);
 
-         findViewById(R.id.btn_connexion).setOnClickListener(view -> {
-             clicBtnConnexion(view);
-         });
+         findViewById(R.id.btn_connexion).setOnClickListener(this::clicBtnConnexion);
 
     }
 

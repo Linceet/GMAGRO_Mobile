@@ -20,7 +20,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class WSConnexionHTTPS extends AsyncTask<String,Integer,String> {
-    private final String base_url = " https://sio.jbdelasalle.com/~ageneste/gmagro/indexMobile.php?";
+    private final String base_url = " https://sio.jbdelasalle.com/~ageneste/gmagrowsandroid/indexMobile.php?";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static OkHttpClient client = null;
 
